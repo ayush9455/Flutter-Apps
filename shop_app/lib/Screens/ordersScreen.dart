@@ -6,7 +6,7 @@ import 'package:shop_app/Providers/orders.dart';
 import 'package:shop_app/Widgets/orderTile.dart';
 
 class ordersScreen extends StatefulWidget {
-  static final routeName = "order-details";
+  static final routeName = "/order-details";
 
   @override
   State<ordersScreen> createState() => _ordersScreenState();

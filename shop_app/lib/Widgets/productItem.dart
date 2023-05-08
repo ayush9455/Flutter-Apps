@@ -29,6 +29,12 @@ class ProductItem extends StatelessWidget {
               child: Image.network(
                 product.imageUrl,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.white10,
+                  child: Center(
+                    child: Text("Unable To Load Image"),
+                  ),
+                ),
               ),
               footer: GridTileBar(
                 backgroundColor: Colors.black54,

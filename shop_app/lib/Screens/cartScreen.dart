@@ -7,7 +7,7 @@ import 'package:shop_app/Providers/orders.dart';
 import 'package:shop_app/Widgets/cartTile.dart';
 
 class cartScreen extends StatefulWidget {
-  static String routeName = 'cart-screen';
+  static String routeName = '/cart-screen';
 
   @override
   State<cartScreen> createState() => _cartScreenState();

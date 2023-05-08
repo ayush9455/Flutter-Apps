@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../Providers/products_provider.dart';
 
 class editProductScreen extends StatefulWidget {
-  static String routeName = "edit-product";
+  static String routeName = "/edit-product";
   const editProductScreen({super.key});
 
   @override

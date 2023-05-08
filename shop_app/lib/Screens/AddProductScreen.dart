@@ -8,7 +8,7 @@ import 'package:shop_app/Providers/products_provider.dart';
 import '../Providers/products.dart';
 
 class addProductScreen extends StatefulWidget {
-  static String routeName = "add-product";
+  static String routeName = "/add-product";
 
   @override
   State<addProductScreen> createState() => _addProductScreenState();

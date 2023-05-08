@@ -6,7 +6,7 @@ import 'package:shop_app/Providers/products.dart';
 import 'package:shop_app/Providers/products_provider.dart';
 
 class productDetails extends StatelessWidget {
-  static String routeName = "product-details";
+  static String routeName = "/product-details";
   const productDetails({super.key});
 
   @override
@@ -23,7 +23,13 @@ class productDetails extends StatelessWidget {
             Container(
               height: 300,
               width: double.infinity,
-              child: Image.network(loadedProduct.imageUrl, fit: BoxFit.cover),
+              child: Image.network(
+                loadedProduct.imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Center(
+                  child: Text("Unable To Load Image"),
+                ),
+              ),
             ),
             SizedBox(
               height: 10,

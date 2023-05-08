@@ -132,17 +132,25 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url =
-        'https://shopapp-dc723-default-rtdb.firebaseio.com/products/$id';
+        'https://shopapp-dc723-default-rtdb.firebaseio.com/products/$id.json';
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
     Product? existingProduct = _items[existingProductIndex];
-    _items.removeWhere((element) => element.id == id);
+    _items.removeAt(existingProductIndex);
     notifyListeners();
-    final response = await http.delete(Uri.parse(url));
-    if (response.statusCode >= 400) {
+
+    try {
+      final response = await http.delete(Uri.parse(url));
+      if (response.statusCode >= 400) {
+        _items.insert(existingProductIndex, existingProduct);
+        notifyListeners();
+        print("it should be readded");
+        throw httpException("Couldn't delete");
+      }
+    } catch (_) {
       _items.insert(existingProductIndex, existingProduct);
       notifyListeners();
-      throw httpException("Couldn't delete");
+      rethrow;
     }
     existingProduct = null;
   }
