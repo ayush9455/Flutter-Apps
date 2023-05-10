@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/Providers/auth.dart';
 import 'package:shop_app/Providers/cart.dart';
 import 'package:shop_app/Providers/products.dart';
 import 'package:shop_app/Screens/productDetails.dart';
@@ -15,6 +16,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: false);
     return Consumer<Product>(
       builder: (context, product, _) => Padding(
         padding: const EdgeInsets.all(8),
@@ -44,7 +46,7 @@ class ProductItem extends StatelessWidget {
                 ),
                 leading: IconButton(
                     onPressed: () {
-                      product.toggleFavourite();
+                      product.toggleFavourite(auth.token!);
                     },
                     icon: product.isFavourite
                         ? Icon(Icons.favorite)

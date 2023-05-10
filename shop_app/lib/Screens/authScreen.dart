@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/Providers/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -20,12 +22,12 @@ class AuthScreen extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
+                  Colors.white.withOpacity(0.9),
                   Colors.blueGrey,
-                  Colors.white.withOpacity(0.5),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                stops: [0, 1],
+                stops: [0, 0.7],
               ),
             ),
           ),
@@ -39,7 +41,8 @@ class AuthScreen extends StatelessWidget {
                 children: <Widget>[
                   Flexible(
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 20.0),
+                      margin:
+                          EdgeInsets.only(bottom: 30.0, left: 15, right: 10),
                       padding:
                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
                       transform: Matrix4.rotationZ(-8 * pi / 180)
@@ -52,15 +55,22 @@ class AuthScreen extends StatelessWidget {
                           BoxShadow(
                             blurRadius: 8,
                             color: Colors.blueGrey,
-                            offset: Offset(0, 2),
+                            offset: Offset(0, 5),
                           )
                         ],
                       ),
                       child: Text(
                         'Shopping App',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
+                          shadows: [
+                            Shadow(
+                                color: Colors.white54,
+                                offset: Offset(0, 2),
+                                blurRadius: 5.0)
+                          ],
                           color: Colors.white,
-                          fontSize: 45,
+                          fontSize: 40,
                           fontFamily: 'Anton',
                           fontWeight: FontWeight.normal,
                         ),
@@ -107,12 +117,23 @@ class _AuthCardState extends State<AuthCard> {
     });
     if (_authMode == AuthMode.Login) {
       // Log user in
+      Provider.of<Auth>(context, listen: false)
+          .login(_authData['email']!, _authData['password']!)
+          .then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     } else {
       // Sign user up
+      Provider.of<Auth>(context, listen: false)
+          .signUp(_authData['email']!, _authData['password']!)
+          .then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _switchAuthMode() {
@@ -136,24 +157,23 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
+        height: _authMode == AuthMode.Signup ? 450 : 320,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
-        width: deviceSize.width * 0.75,
-        padding: EdgeInsets.all(16.0),
+            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 450 : 280),
+        width: deviceSize.width * 0.8,
+        padding: EdgeInsets.all(10.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'E-Mail'),
+                  decoration: InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty || !value.contains('@')) {
                       return 'Invalid email!';
                     }
-                    return null;
                     return null;
                   },
                   onSaved: (value) {

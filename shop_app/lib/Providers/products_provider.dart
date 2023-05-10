@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   // ignore: prefer_final_fields
+  final String token;
   List<Product> _items = [
     // Product(
     //   id: 'p1',
@@ -41,6 +42,7 @@ class Products with ChangeNotifier {
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
+  Products(this.token, this._items);
   List<Product> get items {
     return [..._items];
   }
@@ -54,8 +56,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> FetchAndLoad() async {
-    const url =
-        'https://shopapp-dc723-default-rtdb.firebaseio.com/products.json';
+    final url =
+        'https://shopapp-dc723-default-rtdb.firebaseio.com/products.json?auth=$token';
     try {
       final response = await http.get(Uri.parse(url));
       final List<Product> loadedProducts = [];
@@ -81,8 +83,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addItem(Product item) async {
-    const url =
-        'https://shopapp-dc723-default-rtdb.firebaseio.com/products.json';
+    final url =
+        'https://shopapp-dc723-default-rtdb.firebaseio.com/products.json?auth=$token';
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
@@ -113,7 +115,7 @@ class Products with ChangeNotifier {
     if (prodIndex >= 0) {
       try {
         final url =
-            'https://shopapp-dc723-default-rtdb.firebaseio.com/products/$id.json';
+            'https://shopapp-dc723-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
         await http.patch(Uri.parse(url),
             body: json.encode({
               'title': item.title,
@@ -132,7 +134,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url =
-        'https://shopapp-dc723-default-rtdb.firebaseio.com/products/$id.json';
+        'https://shopapp-dc723-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
     Product? existingProduct = _items[existingProductIndex];
