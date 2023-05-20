@@ -16,7 +16,7 @@ class _editProductScreenState extends State<editProductScreen> {
       Product(id: '', title: '', description: '', price: 0, imageUrl: '');
   final _urlController = TextEditingController();
   final _form = GlobalKey<FormState>();
-  var _isInit = true;
+  final _isInit = true;
   var isLoading = false;
   Future<void> _saveForm() async {
     final isValid = _form.currentState?.validate();
@@ -32,14 +32,14 @@ class _editProductScreenState extends State<editProductScreen> {
       await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text("An Error Occured !!"),
-                content: Text("Something Went Wrong ."),
+                title: const Text("An Error Occured !!"),
+                content: const Text("Something Went Wrong ."),
                 actions: [
                   TextButton(
                       onPressed: () {
                         Navigator.of(ctx).pop();
                       },
-                      child: Text("OK"))
+                      child: const Text("OK"))
                 ],
               ));
     } finally {
@@ -66,11 +66,11 @@ class _editProductScreenState extends State<editProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Product"),
-        actions: [IconButton(onPressed: _saveForm, icon: Icon(Icons.save))],
+        title: const Text("Edit Product"),
+        actions: [IconButton(onPressed: _saveForm, icon: const Icon(Icons.save))],
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -81,7 +81,7 @@ class _editProductScreenState extends State<editProductScreen> {
                     children: [
                       TextFormField(
                         initialValue: _editProduct.title,
-                        decoration: InputDecoration(label: Text("Titile")),
+                        decoration: const InputDecoration(label: Text("Titile")),
                         validator: (value) {
                           if (value!.isEmpty) return "Please Provide A Title";
                           return null;
@@ -99,15 +99,17 @@ class _editProductScreenState extends State<editProductScreen> {
                       ),
                       TextFormField(
                         initialValue: _editProduct.price.toString(),
-                        decoration: InputDecoration(label: Text("Price")),
+                        decoration: const InputDecoration(label: Text("Price")),
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.next,
                         validator: (value) {
                           if (value!.isEmpty) return "Please Provide A Price";
-                          if (double.tryParse(value) == null)
+                          if (double.tryParse(value) == null) {
                             return "Please Provide a Valid Price";
-                          if (double.parse(value) <= 0)
+                          }
+                          if (double.parse(value) <= 0) {
                             return "Please Provide A Price Greater Than 0";
+                          }
                           return null;
                         },
                         onSaved: (value) {
@@ -122,14 +124,16 @@ class _editProductScreenState extends State<editProductScreen> {
                       ),
                       TextFormField(
                         initialValue: _editProduct.description,
-                        decoration: InputDecoration(label: Text("Decription")),
+                        decoration: const InputDecoration(label: Text("Decription")),
                         keyboardType: TextInputType.multiline,
                         maxLines: 3,
                         validator: (value) {
-                          if (value!.isEmpty)
+                          if (value!.isEmpty) {
                             return "Please Provide A Description";
-                          if (value.length < 10)
+                          }
+                          if (value.length < 10) {
                             return "Description Should be of Atleast 10 words";
+                          }
                           return null;
                         },
                         onSaved: (value) {
@@ -146,8 +150,8 @@ class _editProductScreenState extends State<editProductScreen> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            padding: EdgeInsets.all(5),
+                            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            padding: const EdgeInsets.all(5),
                             width: 100,
                             height: 100,
                             decoration: BoxDecoration(
@@ -156,7 +160,7 @@ class _editProductScreenState extends State<editProductScreen> {
                             )),
                             child: FittedBox(
                                 child: _urlController.text.isEmpty
-                                    ? Text(
+                                    ? const Text(
                                         "Enter A Url",
                                       )
                                     : Image.network(
@@ -164,13 +168,13 @@ class _editProductScreenState extends State<editProductScreen> {
                                         fit: BoxFit.cover,
                                         errorBuilder:
                                             (context, error, stackTrace) {
-                                          return Text(
+                                          return const Text(
                                             "Enter Correct Url",
                                           );
                                         },
                                       )),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                             width: 10,
                           ),
@@ -178,13 +182,14 @@ class _editProductScreenState extends State<editProductScreen> {
                             child: TextFormField(
                               // initialValue: _editProduct.imageUrl,
                               decoration:
-                                  InputDecoration(label: Text("Image Url")),
+                                  const InputDecoration(label: Text("Image Url")),
                               keyboardType: TextInputType.url,
                               textInputAction: TextInputAction.done,
                               controller: _urlController,
                               validator: (value) {
-                                if (value!.isEmpty)
+                                if (value!.isEmpty) {
                                   return "Please Provide A Url";
+                                }
                                 return null;
                               },
                               onChanged: (_) {

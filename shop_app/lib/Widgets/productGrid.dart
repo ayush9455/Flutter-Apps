@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/products_provider.dart';
@@ -7,7 +9,7 @@ import './productItem.dart';
 class ProductGrid extends StatelessWidget {
   late List<Product> loaded;
   var showfav = false;
-  ProductGrid(this.showfav);
+  ProductGrid(this.showfav, {super.key});
   @override
   Widget build(BuildContext context) {
     final dataProvider = Provider.of<Products>(context);
@@ -17,7 +19,7 @@ class ProductGrid extends StatelessWidget {
           crossAxisCount: 2, childAspectRatio: 4 / 3),
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         value: loaded[index],
-        child: ProductItem(),
+        child: const ProductItem(),
       ),
       itemCount: loaded.length,
     );

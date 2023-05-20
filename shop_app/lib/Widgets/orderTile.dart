@@ -1,17 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/orders.dart' as ord;
 
 class orderTile extends StatefulWidget {
   // final String id;
   // orderTile(this.id);
   final ord.orderItem order;
-  orderTile(this.order);
+  const orderTile(this.order, {super.key});
 
   @override
   State<orderTile> createState() => _orderTileState();
@@ -25,13 +22,13 @@ class _orderTileState extends State<orderTile> {
     // final loadorder = order.firstWhere((element) => element.id == id);
 
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         children: [
           ListTile(
             title: Text(
               "₹${widget.order.amount.toStringAsFixed(2)}",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle:
                 Text(DateFormat('dd MM yyyy hh:mm').format(widget.order.date)),
@@ -45,7 +42,7 @@ class _orderTileState extends State<orderTile> {
           ),
           if (_expanded)
             Container(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               height: min(widget.order.products.length * 20.0 + 40, 100),
               child: ListView(
                 children: widget.order.products
@@ -54,7 +51,7 @@ class _orderTileState extends State<orderTile> {
                           children: [
                             Text(
                               prod.title,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(
                                 "${prod.quantity} X ${prod.price.toStringAsFixed(2)}"),

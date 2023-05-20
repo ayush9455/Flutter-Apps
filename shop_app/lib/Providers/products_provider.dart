@@ -6,8 +6,8 @@ import 'package:shop_app/Providers/products.dart';
 import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
-  // ignore: prefer_final_fields
-  final String token;
+  final String? token;
+  final String? userId;
   List<Product> _items = [
     // Product(
     //   id: 'p1',
@@ -42,7 +42,7 @@ class Products with ChangeNotifier {
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
-  Products(this.token, this._items);
+  Products(this.token, this.userId, this._items);
   List<Product> get items {
     return [..._items];
   }
@@ -55,24 +55,30 @@ class Products with ChangeNotifier {
     return items.firstWhere((element) => element.id == id);
   }
 
-  Future<void> FetchAndLoad() async {
-    final url =
-        'https://shopapp-dc723-default-rtdb.firebaseio.com/products.json?auth=$token';
+  Future<void> FetchAndLoad([bool isFilter = false]) async {
+    final String filterString =
+        isFilter ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    var url =
+        'https://shopapp-dc723-default-rtdb.firebaseio.com/products.json?auth=$token&$filterString';
     try {
       final response = await http.get(Uri.parse(url));
       final List<Product> loadedProducts = [];
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final extractedData = json.decode(response.body);
 
       if (extractedData == null) {
         return;
       }
+      url =
+          'https://shopapp-dc723-default-rtdb.firebaseio.com/userFavourites/$userId.json?auth=$token';
+      final favResponse = await http.get(Uri.parse(url));
+      final favData = json.decode(favResponse.body);
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
             id: prodId,
             title: prodData['title'],
             description: prodData['description'],
             price: prodData['price'],
-            isFavourite: prodData['isFavourite'],
+            isFavourite: favData == null ? false : favData[prodId] ?? false,
             imageUrl: prodData['imageUrl']));
       });
       _items = loadedProducts;
@@ -92,7 +98,7 @@ class Products with ChangeNotifier {
             'description': item.description,
             'price': item.price,
             'imageUrl': item.imageUrl,
-            'isFavourite': item.isFavourite,
+            'creatorId': userId,
           }));
       final newProduct = Product(
         id: jsonDecode(response.body)['name'],
@@ -105,7 +111,6 @@ class Products with ChangeNotifier {
       _items.add(newProduct);
       notifyListeners();
     } catch (error) {
-      print(error);
       rethrow;
     }
   }
@@ -122,7 +127,6 @@ class Products with ChangeNotifier {
               'description': item.description,
               'price': item.price,
               'imageUrl': item.imageUrl,
-              'isFavourite': item.isFavourite,
             }));
         _items[prodIndex] = item;
         notifyListeners();
@@ -147,7 +151,7 @@ class Products with ChangeNotifier {
         _items.insert(existingProductIndex, existingProduct);
         notifyListeners();
         print("it should be readded");
-        throw httpException("Couldn't delete");
+        throw HttpException("Couldn't delete");
       }
     } catch (_) {
       _items.insert(existingProductIndex, existingProduct);

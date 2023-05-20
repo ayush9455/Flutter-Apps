@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/cart.dart';
 import 'package:shop_app/Providers/orders.dart';
@@ -8,6 +6,8 @@ import 'package:shop_app/Widgets/cartTile.dart';
 
 class cartScreen extends StatefulWidget {
   static String routeName = '/cart-screen';
+
+  const cartScreen({super.key});
 
   @override
   State<cartScreen> createState() => _cartScreenState();
@@ -21,30 +21,29 @@ class _cartScreenState extends State<cartScreen> {
     final cart = Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cart"),
+        title: const Text("Cart"),
       ),
       body: Column(
         children: [
           Card(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             child: Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
-                  Text(
+                  const Text(
                     "Total",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Chip(
                     label: Text(
                       "₹ ${cart.cartValue.toStringAsFixed(2)}",
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                     ),
                     backgroundColor: Colors.blueGrey[300],
                   ),
                   TextButton(
-                    
                       onPressed: (cart.cartValue <= 0.00)
                           ? null
                           : () {
@@ -60,15 +59,17 @@ class _cartScreenState extends State<cartScreen> {
                                 });
                               });
                               cart.clearCart();
-                              final snack = SnackBar(
+
+                              const snack = SnackBar(
                                 content: Text("Order Placed"),
                                 duration: Duration(seconds: 1),
                               );
+                              ScaffoldMessenger.of(context).clearSnackBars();
                               ScaffoldMessenger.of(context).showSnackBar(snack);
                             },
                       child: isLoading
-                          ? CircularProgressIndicator()
-                          : Text(
+                          ? const CircularProgressIndicator()
+                          : const Text(
                               "Order Now",
                               style: TextStyle(color: Colors.black),
                             ))
@@ -76,7 +77,7 @@ class _cartScreenState extends State<cartScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Expanded(

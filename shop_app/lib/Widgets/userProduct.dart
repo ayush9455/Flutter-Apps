@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/products_provider.dart';
 import '../Screens/editProductScreen.dart';
@@ -9,7 +7,7 @@ class userProduct extends StatelessWidget {
   final String id;
   final String imageUrl;
   final String title;
-  userProduct(this.id, this.imageUrl, this.title);
+  const userProduct(this.id, this.imageUrl, this.title, {super.key});
   @override
   Widget build(BuildContext context) {
     final snackbar = ScaffoldMessenger.of(context);
@@ -30,7 +28,7 @@ class userProduct extends StatelessWidget {
                         .deleteProduct(id);
                   } catch (error) {
                     snackbar.hideCurrentSnackBar();
-                    snackbar.showSnackBar(SnackBar(
+                    snackbar.showSnackBar(const SnackBar(
                       content: Text("Deletion Failed !"),
                       duration: Duration(seconds: 2),
                     ));

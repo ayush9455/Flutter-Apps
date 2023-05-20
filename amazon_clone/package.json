@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "deep-email-validator": "^0.1.21",
+    "jsonwebtoken": "^9.0.0"
+  }
+}

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/orders.dart';
 import 'package:shop_app/Widgets/orderTile.dart';
 
 class ordersScreen extends StatefulWidget {
-  static final routeName = "/order-details";
+  static const routeName = "/order-details";
+
+  const ordersScreen({super.key});
 
   @override
   State<ordersScreen> createState() => _ordersScreenState();
@@ -37,10 +37,10 @@ class _ordersScreenState extends State<ordersScreen> {
     final orders = Provider.of<Orders>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your Orders"),
+        title: const Text("Your Orders"),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemBuilder: (ctx, ind) => orderTile(orders.item[ind]),
               itemCount: orders.itemCount,

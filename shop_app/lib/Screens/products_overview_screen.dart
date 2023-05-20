@@ -1,45 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/products_provider.dart';
 import 'package:shop_app/Screens/cartScreen.dart';
-import 'package:shop_app/Screens/ordersScreen.dart';
+
 import 'package:shop_app/Widgets/badge.dart';
 import 'package:shop_app/Screens/drawerScreen.dart';
-import '../Providers/products.dart';
-import '../Widgets/productItem.dart';
-import './products_overview_screen.dart';
+
 import '../Widgets/productGrid.dart';
-// import 'dart:ffi';
 import '../Providers/cart.dart';
 
 enum filterOpt { Favourites, All }
 
 class ProductOverviewScreen extends StatefulWidget {
+  const ProductOverviewScreen({super.key});
+
   @override
   State<ProductOverviewScreen> createState() => _ProductOverviewScreenState();
 }
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
-  var isInit = true;
-  var isLoading = false;
-  @override
-  void didChangeDependencies() {
-    if (isInit) {
-      setState(() {
-        isLoading = true;
-      });
-      Provider.of<Products>(context).FetchAndLoad().then((_) {
-        setState(() {
-          isLoading = false;
-        });
-      });
-    }
-    isInit = false;
-    super.didChangeDependencies();
-  }
-
   var showfav = false;
   @override
   Widget build(BuildContext context) {
@@ -47,7 +26,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         elevation: 0,
-        title: Text("MY SHOP",
+        title: const Text("MY SHOP",
             style: TextStyle(
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -56,21 +35,22 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           PopupMenuButton(
               onSelected: (value) {
                 setState(() {
-                  if (value == filterOpt.Favourites)
+                  if (value == filterOpt.Favourites) {
                     showfav = true;
-                  else
+                  } else {
                     showfav = false;
+                  }
                 });
               },
-              icon: Icon(Icons.more_vert),
+              icon: const Icon(Icons.more_vert),
               itemBuilder: (_) => [
-                    PopupMenuItem(
-                      child: Text("Only Favourites"),
+                    const PopupMenuItem(
                       value: filterOpt.Favourites,
+                      child: Text("Only Favourites"),
                     ),
-                    PopupMenuItem(
-                      child: Text("Show All"),
+                    const PopupMenuItem(
                       value: filterOpt.All,
+                      child: Text("Show All"),
                     )
                   ]),
           Consumer<Cart>(
@@ -79,7 +59,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 value: cart.itemCount.toString(),
                 child: ch!),
             child: IconButton(
-              icon: Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.shopping_cart),
               onPressed: () {
                 Navigator.of(context).pushNamed(cartScreen.routeName);
               },
@@ -87,12 +67,17 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           ),
         ],
       ),
-      drawer: Drawer_Screen(),
-      body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            )
-          : ProductGrid(showfav),
+      drawer: const Drawer_Screen(),
+      body: FutureBuilder(
+          future: Provider.of<Products>(context, listen: false).FetchAndLoad(),
+          builder: (context, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : ProductGrid(showfav)),
     );
   }
 }

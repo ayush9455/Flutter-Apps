@@ -1,14 +1,14 @@
 // import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/products_provider.dart';
 import '../Providers/products.dart';
 
 class addProductScreen extends StatefulWidget {
   static String routeName = "/add-product";
+
+  const addProductScreen({super.key});
 
   @override
   State<addProductScreen> createState() => _addProductScreenState();
@@ -33,14 +33,14 @@ class _addProductScreenState extends State<addProductScreen> {
       await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-                title: Text("An Error Occured !!"),
-                content: Text("Something Went Wrong ."),
+                title: const Text("An Error Occured !!"),
+                content: const Text("Something Went Wrong ."),
                 actions: [
                   TextButton(
                       onPressed: () {
                         Navigator.of(ctx).pop();
                       },
-                      child: Text("OK"))
+                      child: const Text("OK"))
                 ],
               ));
     } finally {
@@ -55,11 +55,11 @@ class _addProductScreenState extends State<addProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Product"),
-        actions: [IconButton(onPressed: _saveForm, icon: Icon(Icons.save))],
+        title: const Text("Add Product"),
+        actions: [IconButton(onPressed: _saveForm, icon: const Icon(Icons.save))],
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Padding(
@@ -69,7 +69,7 @@ class _addProductScreenState extends State<addProductScreen> {
                   child: ListView(
                     children: [
                       TextFormField(
-                        decoration: InputDecoration(label: Text("Titile")),
+                        decoration: const InputDecoration(label: Text("Titile")),
                         validator: (value) {
                           if (value!.isEmpty) return "Please Provide A Title";
                           return null;
@@ -85,15 +85,17 @@ class _addProductScreenState extends State<addProductScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(label: Text("Pice")),
+                        decoration: const InputDecoration(label: Text("Pice")),
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.next,
                         validator: (value) {
                           if (value!.isEmpty) return "Please Provide A Price";
-                          if (double.tryParse(value) == null)
+                          if (double.tryParse(value) == null) {
                             return "Please Provide a Valid Price";
-                          if (double.parse(value) <= 0)
+                          }
+                          if (double.parse(value) <= 0) {
                             return "Please Provide A Price Greater Than 0";
+                          }
                           return null;
                         },
                         onSaved: (value) {
@@ -106,14 +108,16 @@ class _addProductScreenState extends State<addProductScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: InputDecoration(label: Text("Decription")),
+                        decoration: const InputDecoration(label: Text("Decription")),
                         keyboardType: TextInputType.multiline,
                         maxLines: 3,
                         validator: (value) {
-                          if (value!.isEmpty)
+                          if (value!.isEmpty) {
                             return "Please Provide A Description";
-                          if (value.length < 10)
+                          }
+                          if (value.length < 10) {
                             return "Description Should be of Atleast 10 words";
+                          }
                           return null;
                         },
                         onSaved: (value) {
@@ -129,8 +133,8 @@ class _addProductScreenState extends State<addProductScreen> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            padding: EdgeInsets.all(5),
+                            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            padding: const EdgeInsets.all(5),
                             width: 100,
                             height: 100,
                             decoration: BoxDecoration(
@@ -139,7 +143,7 @@ class _addProductScreenState extends State<addProductScreen> {
                             )),
                             child: FittedBox(
                                 child: _urlController.text.isEmpty
-                                    ? Text(
+                                    ? const Text(
                                         "Enter A Url",
                                       )
                                     : Image.network(
@@ -147,26 +151,27 @@ class _addProductScreenState extends State<addProductScreen> {
                                         fit: BoxFit.cover,
                                         errorBuilder:
                                             (context, error, stackTrace) {
-                                          return Text(
+                                          return const Text(
                                             "Enter Correct Url",
                                           );
                                         },
                                       )),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                             width: 10,
                           ),
                           Expanded(
                             child: TextFormField(
                               decoration:
-                                  InputDecoration(label: Text("Image Url")),
+                                  const InputDecoration(label: Text("Image Url")),
                               keyboardType: TextInputType.url,
                               textInputAction: TextInputAction.done,
                               controller: _urlController,
                               validator: (value) {
-                                if (value!.isEmpty)
+                                if (value!.isEmpty) {
                                   return "Please Provide A Url";
+                                }
                                 return null;
                               },
                               onChanged: (_) {

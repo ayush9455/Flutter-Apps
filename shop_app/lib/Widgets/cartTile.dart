@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/cart.dart';
-import 'package:shop_app/Providers/products.dart';
 
 class cartTile extends StatelessWidget {
   final String id;
@@ -11,8 +8,8 @@ class cartTile extends StatelessWidget {
   final double price;
   final double quantity;
   final String productId;
-  cartTile(
-      {required this.title,
+  const cartTile(
+      {super.key, required this.title,
       required this.price,
       required this.quantity,
       required this.id,
@@ -25,19 +22,19 @@ class cartTile extends StatelessWidget {
         return showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: Text("Are You Sure !"),
-                  content: Text("Do You Want To Remove Item From Cart !"),
+                  title: const Text("Are You Sure !"),
+                  content: const Text("Do You Want To Remove Item From Cart !"),
                   actions: [
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).pop(true);
                         },
-                        child: Text("YES")),
+                        child: const Text("YES")),
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).pop(false);
                         },
-                        child: Text("NO")),
+                        child: const Text("NO")),
                   ],
                 ));
       },
@@ -45,10 +42,10 @@ class cartTile extends StatelessWidget {
       direction: DismissDirection.endToStart,
       background: Container(
         color: Colors.red,
-        padding: EdgeInsets.only(right: 20),
-        margin: EdgeInsets.all(3),
+        padding: const EdgeInsets.only(right: 20),
+        margin: const EdgeInsets.all(3),
         alignment: Alignment.centerRight,
-        child: Icon(Icons.delete, size: 30),
+        child: const Icon(Icons.delete, size: 30),
       ),
       onDismissed: (direction) {
         Provider.of<Cart>(context, listen: false).removeItem(productId);
@@ -56,18 +53,18 @@ class cartTile extends StatelessWidget {
       child: Card(
         elevation: 3,
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.blueGrey[700],
               foregroundColor: Colors.white,
               child: FittedBox(child: Text("₹$price")),
             ),
-            title: Text("$title"),
+            title: Text(title),
             subtitle: Text("Total : ${price * quantity}"),
             trailing: Text(
               "$quantity x",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ),
         ),

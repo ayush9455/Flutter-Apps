@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/Providers/products.dart';
 import 'package:shop_app/Providers/products_provider.dart';
 
 class productDetails extends StatelessWidget {
@@ -20,18 +17,18 @@ class productDetails extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 300,
               width: double.infinity,
               child: Image.network(
                 loadedProduct.imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Center(
+                errorBuilder: (context, error, stackTrace) => const Center(
                   child: Text("Unable To Load Image"),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
@@ -42,7 +39,7 @@ class productDetails extends StatelessWidget {
                   fontSize: 25,
                   color: Theme.of(context).primaryColor),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Padding(

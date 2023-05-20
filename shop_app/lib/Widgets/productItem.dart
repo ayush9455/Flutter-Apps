@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/Providers/auth.dart';
 import 'package:shop_app/Providers/cart.dart';
 import 'package:shop_app/Providers/products.dart';
 import 'package:shop_app/Screens/productDetails.dart';
-import '../Screens/productDetails.dart';
 
 class ProductItem extends StatelessWidget {
+  const ProductItem({super.key});
+
   // final String id;
   // final String title;
   // final String imageUrl;
@@ -28,16 +27,6 @@ class ProductItem extends StatelessWidget {
                   .pushNamed(productDetails.routeName, arguments: product.id);
             },
             child: GridTile(
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: Colors.white10,
-                  child: Center(
-                    child: Text("Unable To Load Image"),
-                  ),
-                ),
-              ),
               footer: GridTileBar(
                 backgroundColor: Colors.black54,
                 title: Text(
@@ -46,18 +35,18 @@ class ProductItem extends StatelessWidget {
                 ),
                 leading: IconButton(
                     onPressed: () {
-                      product.toggleFavourite(auth.token!);
+                      product.toggleFavourite(auth.token!, auth.userId!);
                     },
                     icon: product.isFavourite
-                        ? Icon(Icons.favorite)
-                        : Icon(Icons.favorite_border)),
+                        ? const Icon(Icons.favorite)
+                        : const Icon(Icons.favorite_border)),
                 trailing: IconButton(
                     onPressed: () {
                       cart.addItem(product.id, product.price, product.title);
-                      var showSnackBar;
+
                       ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Item Added To Cart"),
+                        content: const Text("Item Added To Cart"),
                         action: SnackBarAction(
                             label: "Undo",
                             onPressed: () {
@@ -65,7 +54,17 @@ class ProductItem extends StatelessWidget {
                             }),
                       ));
                     },
-                    icon: Icon(Icons.shopping_cart)),
+                    icon: const Icon(Icons.shopping_cart)),
+              ),
+              child: Image.network(
+                product.imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.white10,
+                  child: const Center(
+                    child: Text("Unable To Load Image"),
+                  ),
+                ),
               ),
             ),
           ),

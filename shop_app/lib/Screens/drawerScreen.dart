@@ -1,8 +1,7 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/Providers/auth.dart';
 import 'package:shop_app/Screens/ordersScreen.dart';
-import 'package:shop_app/Screens/productDetails.dart';
 import 'package:shop_app/Screens/userProductScreen.dart';
 
 class Drawer_Screen extends StatelessWidget {
@@ -14,36 +13,46 @@ class Drawer_Screen extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
-            title: Text("Hi, Ayush"),
+            title: const Text("Hi, Ayush"),
             automaticallyImplyLeading: false,
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           ListTile(
-            leading: Icon(Icons.shopping_bag_outlined),
-            title: Text("Shop"),
+            leading: const Icon(Icons.shopping_bag_outlined),
+            title: const Text("Shop"),
             onTap: () {
               Navigator.of(context).pushReplacementNamed('/');
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.payment),
-            title: Text("Your Orders"),
+            leading: const Icon(Icons.payment),
+            title: const Text("Your Orders"),
             onTap: () {
               Navigator.of(context).pushNamed(ordersScreen.routeName);
             },
           ),
-          Divider(),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.edit),
-            title: Text("Manage Products"),
+            leading: const Icon(Icons.edit),
+            title: const Text("Manage Products"),
             onTap: () {
-              Navigator.of(context).pushNamed(userProductScreen.routeName);
+              Navigator.of(context)
+                  .pushReplacementNamed(userProductScreen.routeName);
             },
           ),
-          Divider(),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.exit_to_app_rounded),
+            title: const Text("Logout"),
+            onTap: () {
+              Navigator.of(context).pop();
+              Provider.of<Auth>(context, listen: false).logout();
+            },
+          ),
+          const Divider(),
         ],
       ),
     );
