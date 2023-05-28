@@ -11,7 +11,7 @@ class Auth with ChangeNotifier {
   DateTime? _expiry;
   String? _userId;
   Timer? _authTimer;
-  static const String _apikey = 'AIzaSyBqiF2gPs5l2z4sQ4Ply6eyE-XrQnxXIwc';
+  static const String _apikey = 'Your Api Key';
   bool get isAuth {
     return token != null;
   }
